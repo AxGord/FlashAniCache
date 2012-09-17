@@ -51,6 +51,11 @@ package {
 		
 		public function AniCache() {
 			stop();
+			addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		
+		private function init(event:Event):void {
 			for (var i:int = 0; i < numChildren; i++) {
 				var ob:Object = getChildAt(i);
 				if (ob is MovieClip) {
@@ -58,6 +63,7 @@ package {
 					a.push({n:getQualifiedClassName(ob), x:ob.x, y:ob.y, sx:ob.scaleX, sy: ob.scaleY, clip:null});
 				}
 			}
+			
 			resize();
 			stage.addEventListener(Event.RESIZE, fs);
 			timer.addEventListener(TimerEvent.TIMER, resize);
@@ -69,7 +75,7 @@ package {
 			//}
 		}
 		
-		private function fs(event:Event):void {
+		private function fs(event:Event=null):void {
 			timer.start();
 		}
 		
@@ -98,10 +104,10 @@ package {
 				clip.x = o.x;
 				clip.y = o.y;
 				if (o.clip != null) {
-					if (o.clip._playing)
-						clip.gotoAndPlay(o.clip._currentFrame);
+					if (o.clip.playing)
+						clip.gotoAndPlay(o.clip.currentFrame);
 					else
-						clip.gotoAndStop(o.clip._currentFrame);
+						clip.gotoAndStop(o.clip.currentFrame);
 					
 				} else clip.play();
 				addChild(o.clip = clip);

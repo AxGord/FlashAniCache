@@ -51,10 +51,10 @@ package com.touchmypixel.utils
 		public var speed:Number = 1;
 		public var treatAsLoopedGraphic:Boolean = false;
 		
-		public var _playing:Boolean = false;
+		private var _playing:Boolean = false;
 		private var _cache:Boolean = true;
 		private var _totalFrames;
-		public var _currentFrame:Number = 1;
+		private var _currentFrame:Number = 1;
 		
 		private var sX:Number;
 		private var sY:Number;
