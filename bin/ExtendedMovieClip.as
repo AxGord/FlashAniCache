@@ -1,4 +1,4 @@
-﻿/**
+/**
 * Copyright (c) 2012 Alexander Gordeyko <axgord@gmail.com>. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are
@@ -26,28 +26,56 @@
 * or implied, of Alexander Gordeyko <axgord@gmail.com>.
 **/
 package {
-	import flash.display.DisplayObject;
-	//Вписывает объект внутрь прямоугольника, сохраняя пропорции. Размещает по центру.
-	public function setSize(o:DisplayObject, w:Number, h:Number):void {
-		with (o) {
-			var d1:Number = w/h;
-			var d2:Number = width/height;
-			if (d1 < d2) {
-				//height *= w/width;
-				width = w;
-				scaleY = scaleX;
-				y += (h - height) / 2;
-			} else if (d1 > d2) {
-				//width *= h/height;
-				height = h;
-				scaleX = scaleY;
-				x += (w - width) / 2; 
-			} else {
-				width = w;
-				height = h;
-			}
+
+	import flash.display.MovieClip;
+	import flash.events.Event;
+
+	/**
+	 * Adds Resize event
+	 * @author AxGord
+	 */
+
+	public class ExtendedMovieClip extends MovieClip
+	{
+		
+		override public function set scaleX(value:Number):void {
+			if (super.scaleX == value) return;
+			super.scaleX = value;
+			dispatchEvent(new Event(Event.RESIZE));
+		}
+		
+		override public function set scaleY(value:Number):void {
+			if (super.scaleY == value) return;
+			super.scaleY = value;
+			dispatchEvent(new Event(Event.RESIZE));
+		}
+		
+		override public function set width(value:Number):void {
+			if (super.width == value) return;
+			super.width = value;
+			dispatchEvent(new Event(Event.RESIZE));
+		}
+		
+		override public function set height(value:Number):void {
+			if (super.width == value) return;
+			super.height = value;
+			dispatchEvent(new Event(Event.RESIZE));
+		}
+		
+		public override function gotoAndStop(frame:Object,scene:String=null):void {
+			_gotoAndStop(frame, scene);
+		}
+		public override function gotoAndPlay(frame:Object,scene:String=null):void {
+			_gotoAndPlay(frame, scene);
+		}
+		
+		protected function _gotoAndStop(frame:*,scene:String=null):void {
+			super.gotoAndStop(frame, scene);
+		}
+		protected function _gotoAndPlay(frame:*,scene:String=null):void {
+			super.gotoAndPlay(frame, scene);
 		}
 		
 	}
-	
+
 }
