@@ -28,6 +28,7 @@
 package ;
 import flash.display.DisplayObject;
 import flash.display.MovieClip;
+import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.FullScreenEvent;
 import flash.events.MouseEvent;
@@ -42,6 +43,8 @@ import touchmypixel.bitmap.Animation;
  */
 class AniCache extends ExtendedMovieClip
 {
+	public static var DC:Int = 100;
+	
 	private var a:Array < { name:String, x:Float, y:Float, clip:Animation, mc:MovieClip } >;
 	private var sl:SpeedLimit;
 	public var quality:String;
@@ -104,13 +107,15 @@ class AniCache extends ExtendedMovieClip
 		sl.run(_resize);
 	}
 	
+	private inline function okr(v:Float):Float return Math.ceil(v * DC) / DC
+	
 	private function _resize():Void {
 		var q:String = cast stage.quality;
 		stage.quality = cast quality;
 		var mx:Float = 1;
 		var my:Float = 1;
 		var t:DisplayObject = this;
-		while (Std.is(t,MovieClip)) {
+		while (Std.is(t,Sprite)) {
 			mx *= t.scaleX;
 			my *= t.scaleY;
 			t = t.parent;
@@ -120,7 +125,7 @@ class AniCache extends ExtendedMovieClip
 			removeChildAt(0);
 			
 		var animationCache:AnimationCache = AnimationCache.getInstance();
-		var clip:Animation = animationCache.cacheAnimation(n, mc, Math.ceil(mx*100)/100, Math.ceil(my*100)/100);
+		var clip:Animation = animationCache.cacheAnimation(n, mc, okr(mx), okr(my));
 		clip.scaleX = 1 / mx;
 		clip.scaleY = 1 / my;
 		

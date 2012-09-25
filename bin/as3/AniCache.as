@@ -3,6 +3,7 @@ package  {
 	import pony.SpeedLimit;
 	import touchmypixel.bitmap.AnimationCache;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
 	import flash.Boot;
@@ -49,7 +50,7 @@ package  {
 			var mx : Number = 1;
 			var my : Number = 1;
 			var t : flash.display.DisplayObject = this;
-			while(Std._is(t,flash.display.MovieClip)) {
+			while(Std._is(t,flash.display.Sprite)) {
 				mx *= t.scaleX;
 				my *= t.scaleY;
 				t = t.parent;
@@ -57,7 +58,7 @@ package  {
 			if(mx == this.lmx && my == this.lmy) return;
 			while(this.numChildren > 0) this.removeChildAt(0);
 			var animationCache : touchmypixel.bitmap.AnimationCache = touchmypixel.bitmap.AnimationCache.getInstance();
-			var clip : touchmypixel.bitmap.Animation = animationCache.cacheAnimation(this.n,this.mc,Math.ceil(mx * 100) / 100,Math.ceil(my * 100) / 100);
+			var clip : touchmypixel.bitmap.Animation = animationCache.cacheAnimation(this.n,this.mc,this.okr(mx),this.okr(my));
 			clip.scaleX = 1 / mx;
 			clip.scaleY = 1 / my;
 			clip.x = 0;
@@ -69,6 +70,10 @@ package  {
 			else clip.play();
 			this.addChild(this.prClip = clip);
 			this.stage.quality = q;
+		}
+		
+		protected function okr(v : Number) : Number {
+			return Math.ceil(v * AniCache.DC) / AniCache.DC;
 		}
 		
 		public function resize(event : flash.events.Event = null) : void {
@@ -109,5 +114,6 @@ package  {
 		public var quality : String;
 		protected var sl : pony.SpeedLimit;
 		protected var a : Array;
+		static public var DC : int = 100;
 	}
 }
